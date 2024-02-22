@@ -1,0 +1,7 @@
+Title: Secret Diary
+Description:
+
+Ho ho ho! Have you been naughty?
+
+Points: 500
+Flag: HackOn{Arty_attacks_again_$FLAG}

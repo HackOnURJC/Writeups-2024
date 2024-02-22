@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block body %}
+  <h1>The first personal and super safe diary!</h1>
+    <h3>Write your deepest and most secret stories, we promise to keep them safe!</h3>
+    <p>NEWS!!! We have partnered with Santa Claus. if you have been a good boy, you will get a nice present!</p>
+    <img src="/static/logo.png" alt="Poetry context">
+  <p>Do you want to participate?
+      {% if current_user.is_authenticated %}
+          <a href="{{ url_for('profile') }}">Go to your profile</a>
+      {% else %}
+          <a href="{{ url_for('login') }}">log in</a> or <a href="{{ url_for('register') }}">register</a>
+      {% endif %}
+{% endblock %}

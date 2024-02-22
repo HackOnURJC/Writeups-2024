@@ -1,0 +1,75 @@
+#visitform, #entryform {
+    margin-top: 40px;
+}
+
+form {
+    text-align: left;
+}
+
+#userdiary {
+    font-family: cursive;
+    white-space: pre-line;
+}
+
+body {
+    min-height: 100vh;
+    background-repeat: repeat;
+    background-image: url('/static/background.jpg');
+    font-family: Roboto, sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: 'Mountains of Christmas', cursive;
+}
+
+.card-container {
+    padding: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/*
+from https://www.sliderrevolution.com/resources/css-blur-effect/
+*/
+.image-caption-wrapper {
+    margin: 0 0 1rem;
+    position: relative;
+}
+
+.image-caption-wrapper img {
+    filter: blur(30px);
+    transition: all linear 0.25s;
+}
+
+.image-caption-wrapper:hover img {
+    box-shadow: 5px 5px 5px #888888;
+    filter: blur(0px);
+}
+
+.image-caption-wrapper p {
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    left: 50%;
+    opacity: 0;
+    padding: 10px 20px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -20%);
+    transition: all ease-in 0.25s;
+}
+
+.image-caption-wrapper p a {
+    transition: all ease-in 0.25s;
+}
+
+.image-caption-wrapper p a:hover {
+    color: #fff;
+}
+
+.image-caption-wrapper:hover p {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+}

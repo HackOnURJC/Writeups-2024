@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="tab-content col-md-10 offset-md-1">
+    <h1>{{ user.username }} diary entries</h1>
+    <div class="card-container">
+        {% for entry in entries %}
+        <div class="card" style="margin: 20px;">
+            <div class="card-image-container">
+                <img{{ {'src': entry.img_src, entry.img_type: 'true', 'class': 'card-img-top'}|xmlattr }}/>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">{{ entry.date }}</h3>
+                <p class="card-text">{{ entry.text }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <form id="entryform" method="POST" action="/profile/">
+            <h2>Write a new diary entry</h2>
+            <div class="mb-3">
+                <label for="entryimg" class="form-label">Image URL</label>
+                <input type="url" value="https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg"
+                       class="form-control" id="entryimg" name="img_src" required>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="issecret" onclick="sensitiveClicked()">
+                <label class="form-check-label" for="issecret">Does the image contain sensitive information?</label>
+            </div>
+            <div class="mb-3">
+                <label for="entrytext" class="form-label">Diary entry editor</label>
+                <textarea class="form-control" id="entrytext" name="text" rows="10" required></textarea>
+            </div>
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            <input type="hidden" id="img_type" name="img_type" value=""/>
+            <button type="submit" class="btn btn-primary">Save diary entry</button>
+        </form>
+    </div>
+    <form id="visitform" method="POST" action="/visit/">
+        <h2>Have you been a good boy or girl?</h2>
+        <p>Request a visit from our friendly pal Santa Claus! He will give you a present... or not.</p>
+        <button type="submit" class="btn btn-danger">HI SANTA</button>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+    </form>
+</div>
+
+<script>
+    function sensitiveClicked() {
+        // Get the checkbox
+        var checkBox = document.getElementById("issecret");
+        var imgType = document.getElementById("img_type");
+        if (checkBox.checked) {
+            imgType.value = "sensitive";
+        } else {
+            imgType.value = "not-sensitive";
+        }
+    }
+
+    window.addEventListener("load", function (event) {
+        var cardImages = document.querySelectorAll('.card-image-container img');
+        cardImages.forEach(img => {
+            // mark if the image is sensitive
+            if (img.getAttribute('sensitive')) {
+                img.parentElement.classList.add('image-caption-wrapper');
+            }
+        });
+    });
+</script>
+{% endblock %}

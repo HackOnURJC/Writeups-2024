@@ -1,0 +1,10 @@
+version: '3.8'
+
+services: 
+  bot:
+    build: .
+    restart: unless-stopped
+    ports:
+      - 1337:1337
+    environment:
+      - PASSWD=tDGfsG8btQzHdIklM5I4

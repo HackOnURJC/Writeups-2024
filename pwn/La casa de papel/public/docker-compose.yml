@@ -1,0 +1,13 @@
+version: '3'
+services:
+  house_of_paper:
+    build: .
+    platform: linux/amd64
+    restart: always
+    ports:
+      - 42069:42069
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 400M

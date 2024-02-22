@@ -1,0 +1,1 @@
+El archivo data.rar tiene contraseña, pero se puede crackear fácilmente ya que es "juanita". Dentro del rar se encuentra el fichero data.json, que contiene información sobre una serie de descargas en Torrent. Si utilizamos iknowwhatyoudownload.com y buscamos la IP, nos aparece el fichero cuyo nombre es la flag.

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Posts - Guglu</title>
+		<link rel="stylesheet" href="/style.css">
+	</head>
+	<body>	
+		<form align="right" name="form1" method="get" action="logout">
+			<button class="logoutLblPos" type="submit" id="submit">Logout</button>
+		</form>
+		<div class="content">
+			<h1>Post List</h1>
+
+			<ul class="post-list">
+				<% posts.forEach(post => { %>
+				<li class="post-item">
+					<img src="<%= post.logo %>" alt="logo" class="post-image">
+					<div class="post-details">
+						<h2><a href="/post/<%= post.id %>" target="_blank"><%= post.title %></a></h2>
+					</div>
+				</li>
+				<% }); %>
+			</ul>
+
+			<div class="pagination">
+				<p id="nextPage">Not seeing what you are looking for? <span class="nextPage"> next page</span></p>
+			</div>
+
+		</div>
+
+		<script>
+			document.getElementById('nextPage').addEventListener('click', function () {
+				var currentPage = new URLSearchParams(window.location.search).get('page');
+				var nextPage = currentPage ? parseInt(currentPage) + 1 : 2;
+				window.location.href = window.location.pathname + '?page=' + nextPage;
+			});
+		</script>
+
+	</body>
+</html>

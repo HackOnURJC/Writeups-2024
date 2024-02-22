@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="tab-content col-md-4 offset-md-4">
+        <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+            <form method="POST" action="/register">
+                <!-- Username input -->
+                <div class="mb-3">
+                    <label class="form-label" for="usernameinput">Username</label>
+                    <input id="usernameinput" class="form-control" name="username" value="{{ request.form.username }}"/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="aboutmeinput">About you</label>
+                    <input id="aboutmeinput" class="form-control" name="aboutme"
+                           placeholder="Tell us why you are the best person ever"/>
+                </div>
+                <!-- Password input -->
+                <div class="mb-3">
+                    <label class="form-label" for="passwordinput">Password</label>
+                    <input type="password" id="passwordinput" class="form-control" name="password"/>
+                </div>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-4">Create a free account</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

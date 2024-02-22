@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./web
+    restart: unless-stopped
+    environment:
+     - PORT=3000
+     - ADMIN_PWD=tDGfsG8btQzHdIklM5I4
+     - FLAG=HackOn{sortisezggwp}
+    ports:
+     - 3000:3000

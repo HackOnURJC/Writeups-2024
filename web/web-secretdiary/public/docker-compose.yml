@@ -1,0 +1,49 @@
+version: "3"
+services:
+  secretdiary:
+    build: web
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    environment:
+      - "SQLALCHEMY_DATABASE_URI=mysql+pymysql://secretdiarydbuser:secretdiarydbpassword@db:3306/secretdiarydb"
+      - "CHALLENGE_FLAG=HackOn{empty_flag}"
+    ports:
+      - "8083:8080"
+    depends_on:
+      - chrome
+      - redis
+      - db
+
+  db:
+    image: mariadb
+    command: --default-authentication-plugin=mysql_native_password
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: secretdiaryrootpassword
+      MYSQL_DATABASE: secretdiarydb
+      MYSQL_USER: secretdiarydbuser
+      MYSQL_PASSWORD: secretdiarydbpassword
+
+  chrome:
+    image: selenium/node-chrome:4.11.0-20230801
+    shm_size: 2gb
+    restart: on-failure
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+
+  selenium-hub:
+    image: selenium/hub:4.11.0-20230801
+    restart: on-failure
+
+  redis:
+    image: redis:7-alpine
+    restart: on-failure

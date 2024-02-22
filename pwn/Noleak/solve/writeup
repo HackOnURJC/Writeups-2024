@@ -1,0 +1,56 @@
+El reto se puede resolver de varias formas (por ejemplo con ret2dlresolve), pero la 'intended' era la siguiente:
+
+Con los gadgets que te proporciona la función '_' se tiene (simplificando) la siguiente funcionalidad:
+
+(g1) rax <- any(stack)
+
+(g2) rdi <- rax
+
+(g3) rbx <- 0
+	 r11 <- rax
+
+(g4) rax <- r11
+
+(g5) r10b <- ah ^ bh
+
+(g6) bl <- r10b
+
+(g7) rbx <- rbx << 8
+
+(g8) rax <- rax + rbx
+
+La idea normalmente es acabar llamando a system('/bin/sh'), y para ello necesitamos direcciones de libc.
+El problema esq no hay forma de leakear de manera simple pero si nos fijamos en vuln antes de returnear se mete en rax
+el valor de un offset sobre 'libc_start_call_main', que es el valor de retorno guardado tras la llamada a main.
+Con esto no es suficiente, ya que debemos calcular offsets y sumarlos a este valor para sacar las direcciones de system y 
+de '/bin/sh'. Aquí es donde entra el último gadget (g8).
+
+Pero antes de calcularlas preferiblemente tenemos que guardar el valor de libc_start_call_main en otro registro para poder 
+manipular rax sin problemas. Esto nos lleva a la siguiente idea de rop chain:
+
+g3		-> rbx = 0 y r11 = rax (nos guardamos el valor de rax en r11)
+S(off)	-> una serie S de gadgets para poner el offset correcto en rbx (el primero será el de /bin/sh)
+g4		-> rax = r11 = libc_start_call_main + k
+g8		-> sumamos el offset a rax
+g2		-> seteamos rdi = ptr('/bin/sh')
+g4		-> rax = r11 = libc_start_call_main + k
+...		-> mismo procedimiento desde g3 hasta g8 con offset de system
+call rax-> gadget sacado de ropper
+
+Ahora solo falta determinar S(off) (serie de gadgets que hagan rbx = off). Para ello deberemos usar g1, g5, g6 y g7.
+Un posible argumento para la creación de una serie de la clase S podría ser el siguiente:
+
+Para la siguiente serie se va a entender que:
+	- Partimos de rbx=0 (por g3)
+	- El offset off se compone de 8 bytes (o menos, ya que si los más altos son nulls no hace falta setearlos) y
+	  se hará referencia a cada byte como o[i], con i en {0-7} y entendiendo por o[0] como el byte más alto y así sucesivamente.
+
+S sería ocho veces (o menos) la siguiente serie:
+g1		-> rax = x[j] || 00
+g5		-> r10b = x[j] ^ x[j-1]
+g6		-> bl = r10b
+g7		-> rbx << 8, sólo si j<tamaño(off)-1
+
+Con x[j] = (o[j]^o[j-1]) || 00 (para todo j en {0-7}) y con inicialemente j=0 (siendo o[j-1]=0, porq partimos de que rbx=0) y por cada iteración j+=1
+
+

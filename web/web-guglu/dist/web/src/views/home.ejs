@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Home - Guglu</title>
+		<link rel="stylesheet" href="/style.css">
+	</head>
+	<body>	
+		<form align="right" name="form1" method="get" action="logout">
+			<button class="logoutLblPos" type="submit" id="submit">Logout</button>
+		</form>
+		<div class="content">
+			<form class="option" id="createPost" action="/add-post" method="post">
+				<label for="title">Title:</label>
+				<input type="text" id="title" name="title" required>
+
+				<label for="logo">Logo URL:</label>
+				<input type="text" id="logo" name="logo" required>
+
+				<label for="content">Content:</label>
+				<input type="text" id="content" name="content" required>
+
+				<button class="credbutton">Create Post</button>
+			</form>
+
+			<form class="option" id="_" action="/posts" method="get">
+				<a href="/posts">Look your posts.</a>
+			</form>
+
+			<form class="option" id="searchPosts" action="/search" method="get">
+				<label for="query">Search Query:</label>
+				<input type="text" id="query" name="query" required>
+
+				<button class="credbutton">Search Posts</button>
+			</form>
+
+			
+		</div>
+	</body>
+</html>

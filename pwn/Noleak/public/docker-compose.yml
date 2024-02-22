@@ -1,0 +1,13 @@
+version: '3'
+services:
+  noleaks:
+    build: .
+    platform: linux/amd64
+    restart: always
+    ports:
+      - 7676:7676
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 400M
